@@ -1,14 +1,22 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>Plex PCN Redirect</title>
-<script>
-  const q = new URLSearchParams(window.location.search);
-  const pcn = q.get('pcn');
-  const ret = q.get('returnUrl');
-  if (pcn && ret) {
-    const dest = `/SignOn/Customer/${encodeURIComponent(pcn)}?returnUrl=${encodeURIComponent(ret)}`;
-    window.location.href = dest;
-  } else {
-    document.body.innerHTML = 'Invalid link. Missing PCN or returnUrl.';
-  }
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plex Redirect Handler</title>
+    <script>
+        window.onload = function(){
+            const params = new URLSearchParams(window.location.search);
+            const asid = params.get('__asid');
+
+            if(asid){
+                window.location.href = `https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm?__asid=${asid}`;
+            } else {
+                document.body.innerHTML = 'ASID missing. <a href="./">Retry</a>';
+            }
+        };
+    </script>
+</head>
+<body>
+    Redirecting to Plex Equipment Form...
+</body>
+</html>
