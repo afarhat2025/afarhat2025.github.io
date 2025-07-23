@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Redirecting…</title></head>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Plex PCN QR Redirect</title>
+  <script>
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const cust = params.get('customer');        // e.g. "282515"
+      const form = params.get('form');            // encoded target form URL
+      if(!cust || !form) {
+        document.body.innerText = "Invalid QR link – missing customer or form.";
+        console.error('Missing parameters.', cust, form);
+        return;
+      }
+      const signonUrl = `https://cloud.plex.com/SignOn/Customer/${encodeURIComponent(cust)}?returnUrl=${encodeURIComponent(form)}`;
+      window.location.replace(signonUrl);
+    })();
+  </script>
+</head>
 <body>
-<script>
-  const params = new URLSearchParams(location.search);
-  const asid = params.get('__asid');
-  if (asid) {
-    const target = `https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm?__asid=${asid}&CloudApplicationActionKey=11978`;
-    window.location.replace(target);
-  } else {
-    document.body.innerHTML = '<p>Missing session data. Please scan the QR code again.</p>';
-  }
-</script>
+  <p>Redirecting... please wait</p>
 </body>
 </html>
