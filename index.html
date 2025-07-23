@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Plex PCN Redirect</title></head>
+<body>
+<script>
+  (async () => {
+    const p = new URLSearchParams(window.location.search);
+    const pcn = p.get('pcn');       // e.g. "282515"
+    const form = p.get('form');     // e.g. "https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm"
+    const asid = p.get('__asid');   // Plex session token
+
+    if (asid && form) {
+      // Logged in and got session token → send to form
+      window.location.href = form + '?__asid=' + encodeURIComponent(asid);
+      return;
+    }
+
+    if (pcn && form) {
+      // Not logged in yet → send to PCN-specific login with returnUrl pointing back here
+      const thisUrl = window.location.origin + window.location.pathname +
+        '?form=' + encodeURIComponent(form);
+      window.location.href = `/SignOn/Customer/${pcn}?returnUrl=${encodeURIComponent(thisUrl)}`;
+      return;
+    }
+
+    document.body.innerHTML = `
+      <h2>Invalid or missing parameters</h2>
+      <p>Usage: ?pcn=282515&form=${encodeURIComponent('https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm')}</p>`;
+  })();
+</script>
+</body>
+</html>
 
