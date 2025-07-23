@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Plex PCN QR Redirect</title>
+  <meta charset="utf-8">
+  <title>Plex Redirect</title>
   <script>
-    (function(){
+    window.onload = function(){
       const params = new URLSearchParams(window.location.search);
-      const cust = params.get('customer');        // e.g. "282515"
-      const form = params.get('form');            // encoded target form URL
-      if(!cust || !form) {
-        document.body.innerText = "Invalid QR link – missing customer or form.";
-        console.error('Missing parameters.', cust, form);
-        return;
+      const dest = params.get('returnUrl');
+      if(dest){
+        window.location.href = dest;
+      } else {
+        document.body.innerHTML = 'Missing returnUrl. <a href="./">Retry</a>';
       }
-      const signonUrl = `https://cloud.plex.com/SignOn/Customer/${encodeURIComponent(cust)}?returnUrl=${encodeURIComponent(form)}`;
-      window.location.replace(signonUrl);
-    })();
+    };
   </script>
 </head>
 <body>
-  <p>Redirecting... please wait</p>
+  Redirecting… If nothing happens, <a id="link" href="">click here</a>.
+  <script>
+    document.getElementById('link').href = new URLSearchParams(window.location.search).get('returnUrl') || './';
+  </script>
 </body>
 </html>
