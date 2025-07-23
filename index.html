@@ -1,27 +1,23 @@
-<!DOCTYPE html><html><body>
-<script>
-(async ()=>{
-  const p = new URLSearchParams(window.location.search);
-  const pcn = p.get('pcn');
-  const form = p.get('form');
-  const asid = p.get('__asid');
-  if (asid && form) {
-    // Final hop: user is logged in + assigned → go to form
-    window.location.href = form + '?__asid=' + encodeURIComponent(asid);
-  }
-  else if (pcn && form) {
-    // First hop: redirect to Plex login for the PCN we want
-    const url = window.location.origin + window.location.pathname +
-      '?form=' + encodeURIComponent(form);
-    window.location.href =
-      '/SignOn/Customer/' + encodeURIComponent(pcn) + 
-      '?returnUrl=' + encodeURIComponent(url);
-  }
-  else {
-    document.body.innerHTML = 
-      'Usage: ?pcn=282515&form=' + encodeURIComponent('https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm');
-  }
-})();
-</script>
-Redirecting...
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plex Sign-On Redirect</title>
+    <script>
+        window.onload = function(){
+            const params = new URLSearchParams(window.location.search);
+            const pcn = params.get('pcn');
+
+            if(pcn){
+                const returnUrl = encodeURIComponent(`https://afarhat2025.github.io/redirect.html`);
+                window.location.href = `https://cloud.plex.com/signon/customer/${pcn}?returnUrl=${returnUrl}`;
+            } else {
+                document.body.innerHTML = 'PCN missing. Please scan a valid QR code.';
+            }
+        };
+    </script>
+</head>
+<body>
+    Redirecting to Plex Sign-On...
+</body>
+</html>
