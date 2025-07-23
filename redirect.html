@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Plex PCN Redirect</title>
+<script>
+  const q = new URLSearchParams(window.location.search);
+  const pcn = q.get('pcn');
+  const ret = q.get('returnUrl');
+  if (pcn && ret) {
+    const dest = `/SignOn/Customer/${encodeURIComponent(pcn)}?returnUrl=${encodeURIComponent(ret)}`;
+    window.location.href = dest;
+  } else {
+    document.body.innerHTML = 'Invalid link. Missing PCN or returnUrl.';
+  }
+</script>
