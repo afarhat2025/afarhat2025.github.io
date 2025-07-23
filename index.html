@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Redirecting…</title></head>
+<body>
+<script>
+  const params = new URLSearchParams(location.search);
+  const asid = params.get('__asid');
+  if (asid) {
+    const target = `https://cloud.plex.com/Maintenance/Equipment/ViewEquipmentForm?__asid=${asid}&CloudApplicationActionKey=11978`;
+    window.location.replace(target);
+  } else {
+    document.body.innerHTML = '<p>Missing session data. Please scan the QR code again.</p>';
+  }
+</script>
+</body>
+</html>
